@@ -13,6 +13,8 @@ for the agent; you decide what to save.
 | C | [`repo-reviewer`](repo-reviewer/README.md) | this repository's docs and data | findings report with file evidence | reviewing a merge request for consistency |
 | Stretch | [`retro-writer`](retro-writer/README.md) | fictional Jira sprint export | retro draft with themes and actions | preparing the sprint retro |
 
+Day 4 also contains [your first hook](first-hook/README.md): first see the loop through the trace hook, then set one rule on it.
+
 Pick by the work you want to be faster at next week, not by difficulty; all
 four use the same tools (`Read`, `Glob`, `Grep`) and the same rules. Groups
 of 3–4 form **after** the individual block and are strongest when the group
@@ -37,10 +39,16 @@ restart it. Nothing is committed: `/.claude/`, `trace/`, and
 ## The same loop for every option
 
 ```
-goal + contract  →  agent observes sources  →  decides one bounded step
-→  tool action (Read/Glob/Grep)  →  you inspect the trace and the preview
-→  repeat, or stop at the human gate (you accept, park, or redirect)
+your prompt + contract
+  → GATHER CONTEXT   (Read / Glob / Grep the sources)
+  → TAKE ACTION      (decide one bounded step; draft in chat)
+  → VERIFY RESULTS   (check against the contract; checker; your review)
+  → repeat with what it learned, or stop at the human gate
+You can interrupt, steer, or add context at any point.
 ```
+
+That is the agentic loop from the Claude Code docs; every tool call inside it
+leaves one line in your trace.
 
 Rules that never change: the agent previews in chat and writes nothing; you
 save what you accept under `participant-output/`; every claim cites a file

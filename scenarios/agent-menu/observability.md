@@ -29,7 +29,7 @@ python3 scenarios/agent-menu/tools/trace_summary.py            # newest trace
 python3 scenarios/agent-menu/tools/trace_summary.py trace/<id>.jsonl
 ```
 
-The summary prints the four questions to answer in your run log:
+The summary prints the four questions to answer in your run log. They map onto the three phases of the agentic loop — gather context (2), take action (3, 4), verify results (your checker and review):
 
 1. **What did the human ask?**
 2. **Which sources did the agent read, in which order?** Compare with the

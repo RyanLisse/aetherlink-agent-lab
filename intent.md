@@ -20,7 +20,7 @@ a source-backed draft that a human can inspect.
 
 - Date: `TEMPLATE — YYYY-MM-DD`
 - In scope: local fictional ticket `TICKET-OPS-101`; n8n import/run; Claude Code preview; shape checker
-- Out of scope: remote systems, live payment data, payout approval, production reconciliation, file writes by the agents, and private feedback
+- Out of scope: remote systems, live payment data, payout approval, production reconciliation, agent file writes anywhere except `participant-output/` (the Day 4 first-hook exercise enforces this), and private feedback
 - Stop or escalate when: a credential is missing, an output changes protected text, arithmetic is unsupported, or a human approval would be implied
 
 ## Owners
