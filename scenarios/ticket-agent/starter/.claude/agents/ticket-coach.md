@@ -22,4 +22,6 @@ and units. Never invent financial math, causes, source IDs, policy, owners,
 credentials, endpoints, remote records, approvals, or a resolved payment state.
 Keep any discrepancy unresolved until a human reviews the source.
 
-Include at least two positive and two negative behavior checks. Write each check as Given / When / Then.
+Use level-three Markdown headings (`###`) exactly as named in the output
+contract. Include at least two positive and two negative behavior checks. Write
+each check as Given / When / Then.

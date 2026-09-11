@@ -9,23 +9,28 @@ against official n8n documentation and the official n8n repository's
 | When clicking `Execute workflow` | `n8n-nodes-base.manualTrigger` | 1 | main → Ticket input |
 | Ticket input | `n8n-nodes-base.set` | 3.4 | main → AI Agent |
 | AI Agent | `@n8n/n8n-nodes-langchain.agent` | 3.1 | receives input, model, tool |
-| OpenAI Chat Model | `@n8n/n8n-nodes-langchain.lmChatOpenAi` | 1.2 | `ai_languageModel` → AI Agent |
+| Anthropic Chat Model | `@n8n/n8n-nodes-langchain.lmChatAnthropic` | 1.6 | `ai_languageModel` → AI Agent |
 | Calculator | `@n8n/n8n-nodes-langchain.toolCalculator` | 1 | `ai_tool` → AI Agent |
 
 The JSON contains no credential object or API key. After import, select an
-existing chat-model credential in the OpenAI Chat Model node. The learner owns
-that choice in the UI; do not export credentials back into this repository.
+existing Anthropic API credential in the Anthropic Chat Model node. The learner
+owns that choice in the UI; do not export credentials back into this repository.
+Anthropic is the prepared default because the afternoon rebuild runs on Claude:
+keeping the model family the same on both platforms leaves the platform as the
+main visible difference. On n8n Cloud the node can also run on gateway credits
+instead of a personal API key; record which access mode was used.
 
 ## Import and configure
 
 1. Open n8n and choose **Import from File**.
 2. Select [workflows/ticket-coach.json](workflows/ticket-coach.json).
-3. Open **OpenAI Chat Model**, choose a credential in the credential selector,
-   and keep the model shown as `gpt-4o-mini` unless the human reviewer chooses
-   another available model. Record the actual model. If the approved account
-   uses another provider, choose that provider's compatible chat-model node in
-   the UI and record the substitution; the functional ticket contract stays the
-   same.
+3. Open **Anthropic Chat Model**, choose a credential in the credential
+   selector, and keep the model shown as `Claude Sonnet 5` (`claude-sonnet-5`)
+   unless the human reviewer chooses another available model. Record the
+   actual model. If the approved account uses another provider (for example
+   OpenAI), replace the sub-node with that provider's chat-model node in the UI,
+   reconnect it to the AI Agent's model input, and record the substitution; the
+   functional ticket contract stays the same.
 4. Confirm the **Calculator** node is connected to the AI Agent's tool input.
    Do not replace it with a basic LLM chain.
 5. Open **Ticket input** and verify the supplied ticket ID is
@@ -60,7 +65,7 @@ node then supplies `ticket_id`, `ticket_title`, and `ticket` fields.
 **Ticket input → AI Agent.** The agent's prompt is the `ticket` field. Its
 system message is the same bounded contract used by the Claude starter.
 
-**OpenAI Chat Model → AI Agent.** This is the required language-model sub-node.
+**Anthropic Chat Model → AI Agent.** This is the required language-model sub-node.
 Select its credential in the UI; no credential is serialized in the file.
 
 **Calculator → AI Agent.** This is the real tool connection. The agent is
@@ -79,7 +84,7 @@ editor:
 3. Add **AI Agent** and connect the Set node's main output to it. Set the
    prompt type to **Define** and the text expression to `={{ $json.ticket }}`.
    Copy the bounded system message from the imported **AI Agent** node.
-4. Add **OpenAI Chat Model** (or the approved compatible chat-model node),
+4. Add **Anthropic Chat Model** (or the approved compatible chat-model node),
    select its credential in the UI, and connect its model output to the AI
    Agent's `ai_languageModel` input.
 5. Add **Calculator** and connect its output to the AI Agent's `ai_tool`
@@ -95,7 +100,8 @@ version difference as `OPEN` rather than silently changing the contract.
 
 - [Manual Trigger](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.manualtrigger/)
 - [AI Agent](https://docs.n8n.io/integrations/builtin/cluster-nodes/root-nodes/n8n-nodes-langchain.agent/)
-- [OpenAI Chat Model](https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.lmchatopenai/)
+- [Anthropic Chat Model](https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.lmchatanthropic/)
+- [OpenAI Chat Model](https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.lmchatopenai/) (alternative provider)
 - [Calculator](https://docs.n8n.io/integrations/builtin/cluster-nodes/sub-nodes/n8n-nodes-langchain.toolcalculator/)
 - [Official n8n agent-with-tool sample JSON](https://raw.githubusercontent.com/n8n-io/n8n/master/packages/%40n8n/nodes-langchain/nodes/agents/Agent/test/integration/workflows/agent-v3-with-tool.json)
 - [Official n8n Set-node sample JSON](https://raw.githubusercontent.com/n8n-io/n8n/master/packages/%40n8n/workflow-sdk/test-fixtures/committed-workflows/0.json)

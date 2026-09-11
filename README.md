@@ -39,7 +39,7 @@ payout. Keep unsupported explanations and missing evidence as `OPEN`.
 | [intent.md](intent.md) | Empty participant outcome and evidence contract |
 | [progress.md](progress.md) | Empty current-state board |
 | [n8n/README.md](n8n/README.md) | Import, UI setup, smoke test, and evidence steps |
-| [n8n/workflows/ticket-coach.json](n8n/workflows/ticket-coach.json) | Credential-free importable n8n demo |
+| [n8n/workflows/ticket-coach.json](n8n/workflows/ticket-coach.json) | Credential-free importable n8n demo (Anthropic chat model by default; provider swappable in the UI) |
 | [scenarios/ticket-agent/](scenarios/ticket-agent/) | Same ticket input, shared instruction, contract, starter, examples, and checker |
 | [scenarios/payment-reconciliation/data/](scenarios/payment-reconciliation/data/) | Synthetic ledger, PSP, and bank CSVs for optional local context |
 | [scenarios/payment-reconciliation/tickets/](scenarios/payment-reconciliation/tickets/) | Six fictional FIN-001–FIN-006 ticket templates |

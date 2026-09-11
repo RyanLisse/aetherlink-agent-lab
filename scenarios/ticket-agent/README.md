@@ -34,7 +34,9 @@ execution ID/time, model, input ticket ID, tool connection, and review result.
 
 ## 2. Claude Code run
 
-From this repository root, copy the starter into a clean learner project:
+From the root of your cloned `aetherlink-agent-lab` checkout, copy the starter
+into the repository's own `.claude/agents/` folder (the checkout is the learner
+project; `.claude/` is not committed):
 
 ```sh
 mkdir -p .claude/agents
