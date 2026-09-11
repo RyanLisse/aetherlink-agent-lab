@@ -1,4 +1,12 @@
-# n8n ticket-coach quickstart
+# n8n route quickstart
+
+Choose the workflow named by the daily branch. Both workflows are local demo
+artifacts. Credentials are selected in the n8n UI and never committed.
+
+| Route | Training day | Workflow | Output contract |
+| --- | --- | --- | --- |
+| Squad 1 payment operations | Day 4 | [`workflows/ticket-coach.json`](workflows/ticket-coach.json) | Preserved ticket sections, proposal, positive and negative tests, `OPEN questions` |
+| Squad 2 mock GitLab review | Day 3 | [`workflows/repo-reviewer.json`](workflows/repo-reviewer.json) | Three to eight anchored findings, consistency check, `OPEN questions` |
 
 ## Squad 2 repository-review workflow
 
