@@ -1,9 +1,11 @@
 # AetherLink agent lab
 
-This repository is a small participant lab for one bounded fictional payment
-operations ticket. Build the same ticket-coach twice: first in n8n, then in
-Claude Code. It contains templates, synthetic inputs, importable demo material,
-and a shape checker. It does not contain a course schedule, trainer answer key,
+This repository is a small participant lab for two bounded training routes. The
+Squad 1 continuation uses one fictional payment-operations ticket. The new
+Squad 2 route uses a mock GitLab repository-review request. Each route moves
+from a written contract to an agent run and a human review. The repository
+contains templates, synthetic inputs, importable demo material, and shape
+checkers. It does not contain the course schedule, trainer answer key,
 facilitator notes, private feedback, or live team integrations.
 
 Clone this repository once for the participant workspace:
@@ -34,21 +36,19 @@ outputs, reviewer, and `OPEN` gaps in `progress.md` and the daily run log.
 ## Quickstart
 
 1. Switch to the branch named for today's squad and day, then read
-   [intent.md](intent.md) and [progress.md](progress.md), and fill the
-   participant owners and today's boundary.
-2. Read [the ticket input](scenarios/ticket-agent/ticket-inputs.md) and [the
-   output contract](scenarios/ticket-agent/ticket-template.md). Use
-   `TICKET-OPS-101` for this first run.
-3. Build and run the n8n version using [the n8n quickstart](n8n/README.md).
-   Import [the workflow JSON](n8n/workflows/ticket-coach.json), select a model
-   credential in the UI, and record the execution readback.
-4. Build and preview the same contract with the Claude Code starter using [the
-   ticket-agent guide](scenarios/ticket-agent/README.md).
-5. Run the checker on a human-previewed output. The checker confirms shape only;
-   it does not prove that either agent ran or that the content is correct.
-6. On Day 4 choose one agent from [the agent menu](scenarios/agent-menu/README.md),
-   install its starter (subagents plus a trace hook), and build it step by step.
-   On Day 5 harden it with the `evaluator` subagent and hand it over.
+   [intent.md](intent.md), [progress.md](progress.md), and [the branch map](BRANCHING.md).
+2. Follow the route for that branch. Squad 1 uses the payment ticket in
+   [the ticket-agent guide](scenarios/ticket-agent/README.md). Squad 2 uses
+   [the repository-review guide](scenarios/agent-menu/repo-reviewer/README.md)
+   and the mock GitLab snapshot.
+3. On an n8n day, import the workflow named by the branch guide, select a model
+   credential in the UI, and record the execution readback. On a Claude Code
+   day, install the matching read-only starter and record the trace.
+4. Run the relevant shape checker on a human-previewed output. A checker
+   confirms shape only; it does not prove that an agent ran or that the content
+   is correct.
+5. Save evidence on the day's branch. Keep `OPEN` for missing access, unrun
+   checks, and decisions that require the team.
 
 The first exercise is deliberately bounded. Do not connect a remote Jira,
 GitLab, Confluence, PSP, bank, or production repository. Do not approve a
@@ -60,10 +60,11 @@ payout. Keep unsupported explanations and missing evidence as `OPEN`.
 | --- | --- |
 | [intent.md](intent.md) | Empty participant outcome and evidence contract |
 | [progress.md](progress.md) | Empty current-state board |
-| [n8n/README.md](n8n/README.md) | Import, UI setup, smoke test, and evidence steps |
+| [n8n/README.md](n8n/README.md) | Payment-ticket n8n import, UI setup, smoke test, and evidence steps |
+| [n8n/workflows/repo-reviewer.json](n8n/workflows/repo-reviewer.json) | Squad 2 mock-GitLab repository-review workflow |
 | [n8n/workflows/ticket-coach.json](n8n/workflows/ticket-coach.json) | Credential-free importable n8n demo (Anthropic chat model by default; provider swappable in the UI) |
 | [scenarios/ticket-agent/](scenarios/ticket-agent/) | Same ticket input, shared instruction, contract, starter, examples, and checker |
-| [scenarios/agent-menu/](scenarios/agent-menu/) | Day 4–5 menu: choose one of three Claude Code agents (plus a stretch option), trace hooks, evaluator, checker |
+| [scenarios/agent-menu/](scenarios/agent-menu/) | Squad 2 Claude Code repository reviewer, Squad 1 Day 5 menu, trace hooks, evaluator, and checkers |
 | [scenarios/payment-reconciliation/data/](scenarios/payment-reconciliation/data/) | Synthetic ledger, PSP, and bank CSVs for optional local context |
 | [scenarios/payment-reconciliation/tickets/](scenarios/payment-reconciliation/tickets/) | Six fictional FIN-001–FIN-006 ticket templates |
 | [templates/](templates/) | Session, recap, knowledge, decision, handoff, and run-log forms |
