@@ -1,8 +1,8 @@
 {
-  "_note": "FICTIONAL training fixture. Northstar demo team, sprint 42. No real Jira project, people, or payments. Keys FIN-4xx are local references, not Jira-assigned.",
+  "_note": "FICTIONAL training fixture. Fictional Reconciliation demo team, sprint 42. No real Jira project, people, or payments. Keys FIN-4xx are local references, not Jira-assigned.",
   "sprint": {
     "id": 42,
-    "name": "Northstar FinOps — Sprint 42 (fictional)",
+    "name": "Fictional Reconciliation FinOps — Sprint 42 (fictional)",
     "goal": "Explain and quarantine every batch difference for cutoff 2026-09-10 without approving a payout.",
     "start": "2026-08-27",
     "end": "2026-09-09",
