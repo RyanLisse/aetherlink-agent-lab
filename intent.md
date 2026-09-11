@@ -10,18 +10,27 @@ Claude Code project agent. Squad 2 builds the bounded mock GitLab
 repository-review agent twice, first in n8n and then in Claude Code. Both
 routes return a source-backed draft that a human can inspect.
 
-## Success checks
+## Success checks shared by both routes
 
 - [ ] The learner can import and run the n8n workflow for the selected branch after selecting a chat-model credential in the UI.
-- [ ] The AI Agent has a real Calculator tool connection and uses it for stated arithmetic.
-- [ ] Both implementations preserve the selected ticket's `Current situation` and `Desired situation` sections exactly.
-- [ ] Both outputs contain `Technical proposal`, `Positive tests`, `Negative tests`, and `OPEN questions`.
-- [ ] A human records model/access settings, the exact input, output evidence, and any OPEN items.
+- [ ] The AI Agent has a real Calculator tool connection and uses it for stated arithmetic where the route requires arithmetic.
+- [ ] A human records model/access settings, the exact input, output evidence, reviewer, and any `OPEN` items.
+
+### Squad 1 ticket-coach contract
+
+- [ ] The n8n and Claude Code drafts preserve the selected ticket's `Current situation` and `Desired situation` sections exactly.
+- [ ] Both drafts contain `Technical proposal`, `Positive tests`, `Negative tests`, and `OPEN questions`.
+
+### Squad 2 repository-review contract
+
+- [ ] The n8n and Claude Code reports contain three to eight `F-01` through `F-08` findings.
+- [ ] Every finding contains `Path`, `Evidence`, `Observation`, `Severity`, and `Proposal`, followed by `Checked and consistent` and `OPEN questions`.
+- [ ] Every cited path exists in the local mock repository, and a human confirms the evidence before accepting a finding.
 
 ## Boundary
 
 - Date: `TEMPLATE — YYYY-MM-DD`
-- In scope: the fictional input named by the branch (`TICKET-OPS-101` for Squad 1 or `GL-REVIEW-001` for Squad 2); n8n import/run; Claude Code preview; shape checker
+- In scope: the fictional input named by the branch (`TICKET-OPS-101` for Squad 1 or `GL-REVIEW-001` for Squad 2); n8n import/run; Claude Code preview; route-specific shape checker
 - Out of scope: remote systems, live payment data, payout approval, production reconciliation, agent file writes anywhere except `participant-output/` (the Day 4 first-hook exercise enforces this), and private feedback
 - Stop or escalate when: a credential is missing, an output changes protected text, arithmetic is unsupported, or a human approval would be implied
 
