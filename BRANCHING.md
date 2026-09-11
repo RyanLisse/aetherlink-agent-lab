@@ -7,11 +7,11 @@ the human review gate.
 
 | Branch | Work focus | Required handoff |
 | --- | --- | --- |
-| `squad-2/day-1` | First local GitLab repository-review note | Source paths, finding, reviewer, and `OPEN` checks |
-| `squad-2/day-2` | Same review agent in n8n and Claude Code | Two settings/output records and comparison |
-| `squad-2/day-3` | Analyst → developer → tester relay | Role-preserving review packet |
-| `squad-2/day-4` | Runbook and shared-skill handoff | Fresh-reader reproduction and mock GitLab fields |
-| `squad-2/day-5` | Independent second review scope | Reproducible note and next owner |
+| `squad-2/day-1` | AI-native SDLC foundations and intent | Intent, success criteria, lifecycle map, and human gate |
+| `squad-2/day-2` | AI-native SDLC feedback loop | Small plan, positive and negative checks, and handoff |
+| `squad-2/day-3` | First bounded n8n GitLab repository review | Workflow settings, findings, reviewer, and `OPEN` checks |
+| `squad-2/day-4` | Same repository review in Claude Code | Read-only trace, checker result, and comparison |
+| `squad-2/day-5` | Own team issue end to end | Issue brief, evidence, human gate, and handoff |
 
 ## Squad 1 continuation
 
