@@ -1,5 +1,32 @@
 # n8n ticket-coach quickstart
 
+## Squad 2 repository-review workflow
+
+Squad 2 Day 3 uses [`workflows/repo-reviewer.json`](workflows/repo-reviewer.json).
+It is a credential-free mock GitLab snapshot. The workflow does not connect to
+GitLab and does not read a participant checkout. The snapshot node contains six
+fictional changed-file entries so the exercise remains reproducible and safe.
+
+1. Import `workflows/repo-reviewer.json`.
+2. Select a model credential in **Anthropic Chat Model** and record the actual
+   model and access mode in the run log.
+3. Confirm **Mock GitLab snapshot → Repository Review Agent** and
+   **Calculator → Repository Review Agent** are connected.
+4. Execute once. Save the preview yourself and record the execution ID, model,
+   intermediate Calculator call, findings, reviewer, and `OPEN` checks.
+5. Run the shape checker on the saved output:
+
+   ```sh
+   python3 scenarios/agent-menu/tools/check_menu_output.py \
+     --agent repo-reviewer --output participant-output/findings.md
+   ```
+
+The output must contain three to eight findings with `Path`, `Evidence`,
+`Observation`, `Severity`, and `Proposal`, followed by `Checked and consistent`
+and `OPEN questions`. The checker proves output shape only. A human still
+confirms each finding against the supplied snapshot. Never paste a real GitLab
+URL, token, repository content, or customer data into this workflow.
+
 This workflow is a static, credential-free import artifact. It was checked
 against official n8n documentation and the official n8n repository's
 `agent-v3-with-tool.json` sample. The node types and versions in the export are:
