@@ -1,10 +1,10 @@
-# Agent menu — Day 4 build, Day 5 harden (Claude Code)
+# Agent menu — Squad 2 Day 4 Claude Code build
 
-On Day 3 everyone built the same `ticket-coach`. On **Day 4 you choose one
-agent** from this menu and build it step by step. On **Day 5 you harden the
-same agent**: add an evaluator, read your own trace, and hand it over so a
-fresh reader can reproduce it. Everything is local, fictional, and read-only
-for the agent; you decide what to save.
+Squad 2 builds the mock GitLab repository reviewer in n8n on Day 3, then
+rebuilds the same functional contract in Claude Code on Day 4. Squad 1 uses
+this menu on its existing Day 5 continuation to harden a payment-ticket agent.
+Everything is local, fictional, and read-only for the agent; you decide what to
+save.
 
 | Option | Agent | Input it reads | Output it returns | Closest real task |
 | --- | --- | --- | --- | --- |
@@ -100,7 +100,7 @@ bank record is created, changed, or implied. The checker checks output shape
 and only some citation forms; a human must verify that every cited path and
 source row actually supports the claim.
 
-## Day 4 — build (individual 25 min, then groups of 3–4)
+## Squad 2 Day 4 — Claude Code build (individual 25 min, then groups of 3–4)
 
 1. Open your option's README. Read the **contract** and the **task cards**.
 2. Fill `templates/run-log.md` header: option, model shown, tools, input.
@@ -111,7 +111,7 @@ source row actually supports the claim.
 6. Run the checker: `python3 scenarios/agent-menu/tools/check_menu_output.py --agent <name> --output participant-output/<option>.md`.
 7. Record PASS/FAIL/OPEN and one observed line in your run log.
 
-## Day 5 — harden (evaluator-optimizer)
+## Squad 1 Day 5 — harden (evaluator-optimizer)
 
 1. Run the `evaluator` subagent on your saved output and the option README.
 2. If `REVISE`, apply **only** its numbered instructions by re-prompting your
