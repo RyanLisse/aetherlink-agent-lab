@@ -9,10 +9,14 @@ Usage:
     python3 scenarios/agent-menu/tools/check_menu_output.py --agent evaluator      --output participant-output/evaluation.md
 
 Run it from the repository root on a human-previewed output that you saved
-yourself. It checks headings, labelled lines, and that cited paths or issue
-keys exist. It does NOT judge whether the content is correct, whether the
-agent actually ran, or whether a payment question is answered. Exit codes:
-0 PASS, 1 FAIL, 2 usage or file error.
+yourself. It checks headings and labelled lines, plus limited citation forms:
+repo-reviewer `Path` values are checked against the local repository and
+retro-writer issue keys against its fixture. Ticket-triage `Source` lines and
+runbook-writer `[source: ...]` markers are shape-only; they do not prove that
+a path or source row exists. It does NOT judge whether the content is correct,
+whether the agent actually ran, or whether a payment question is answered.
+The human must verify every cited path and source row. Exit codes: 0 PASS, 1
+FAIL, 2 usage or file error.
 """
 
 from __future__ import annotations
@@ -134,8 +138,11 @@ def check_evaluator(text: str) -> list[str]:
         errors.append(f"Verdict must be exactly PASS or REVISE (got '{verdict[:30]}')")
     crit = section(text, "Criteria")
     results = re.findall(r"^- C([1-5]) .*? — (PASS|FAIL) — ", crit, re.MULTILINE)
-    if len(results) != 5:
-        errors.append(f"expected 5 criteria lines 'C1..C5 … — PASS|FAIL — …', found {len(results)}")
+    criterion_ids = [criterion_id for criterion_id, _ in results]
+    expected_ids = [str(i) for i in range(1, 6)]
+    if criterion_ids != expected_ids:
+        found = ", ".join(f"C{i}" for i in criterion_ids) or "none"
+        errors.append(f"expected exactly one criterion each for C1..C5 in order; found {found}")
     if verdict == "PASS" and any(r[1] == "FAIL" for r in results):
         errors.append("Verdict PASS but a criterion is FAIL")
     if verdict == "REVISE" and results and all(r[1] == "PASS" for r in results):
@@ -168,8 +175,8 @@ def main() -> int:
         for e in errors:
             print(f"- {e}")
         return 1
-    print(f"PASS shape: {args.agent}; required headings, labelled lines, and cited paths/keys are present")
-    print("OPEN: correctness of the content, the agent run itself, and any payment question still need human review")
+    print(f"PASS shape: {args.agent}; required headings, labelled lines, and configured citation shapes are present")
+    print("OPEN: verify every cited path and source row, then review content and the agent run; any payment question still needs human review")
     return 0
 
 

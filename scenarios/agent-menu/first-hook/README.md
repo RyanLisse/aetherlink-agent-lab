@@ -34,6 +34,20 @@ rule, in TypeScript instead of a settings file. Not part of the exercise
 Goal: Claude may only write files under `participant-output/`. Anything else
 is blocked with a message you wrote.
 
+The boundary is evaluated against the resolved project directory. The hook
+uses `CLAUDE_PROJECT_DIR` when Claude Code provides it and otherwise uses the
+hook's current working directory. Relative file paths are rooted there;
+absolute paths are checked as supplied. The candidate path and
+`participant-output/` are resolved before containment is checked, so `..`
+traversal and symlinks that escape the project or output directory are blocked.
+Malformed input and a missing `file_path` fail closed with exit code `2`.
+
+This rule is attached to the `Write|Edit` matcher only. It does not constrain
+other tools such as `Bash`; keep the exercise's tool restrictions in place
+when demonstrating the boundary. The shell and PowerShell launchers should
+delegate their unchanged stdin to this Python implementation so every
+platform applies the same resolved-path rule.
+
 ### Card — first hook
 
 - **Goal:** a `PreToolUse` hook that blocks `Write`/`Edit` outside `participant-output/`, verified with `/hooks` and one blocked attempt.
@@ -43,9 +57,9 @@ is blocked with a message you wrote.
 
      | Your laptop | Copy | Command in settings.json |
      | --- | --- | --- |
-     | macOS / Linux / Git Bash | `cp scenarios/agent-menu/first-hook/protect-output.sh .claude/hooks/ && chmod +x .claude/hooks/protect-output.sh` | `"\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-output.sh"` |
+     | macOS / Linux / Git Bash | `cp scenarios/agent-menu/first-hook/protect-output.sh scenarios/agent-menu/first-hook/protect_output.py .claude/hooks/ && chmod +x .claude/hooks/protect-output.sh` | `"\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-output.sh"` (the launcher delegates to `protect_output.py`) |
      | Any OS with Python | `cp scenarios/agent-menu/first-hook/protect_output.py .claude/hooks/` | `"python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect_output.py"` (Windows: `python` instead of `python3`) |
-     | Windows PowerShell | `copy scenarios\agent-menu\first-hook\protect-output.ps1 .claude\hooks\` | `"powershell.exe -NoProfile -File \"%CLAUDE_PROJECT_DIR%\\.claude\\hooks\\protect-output.ps1\""` |
+     | Windows PowerShell | `copy scenarios\agent-menu\first-hook\protect-output.ps1, scenarios\agent-menu\first-hook\protect_output.py .claude\hooks\` | `"python \"$env:CLAUDE_PROJECT_DIR/.claude/hooks/protect_output.py\""` |
 
   2. Open `.claude/settings.json` and add `PreToolUse` **as a sibling** of the
      existing events (do not replace the `hooks` object):

@@ -25,15 +25,57 @@ mixes two different options.
 From your `aetherlink-agent-lab` checkout root:
 
 ```sh
-cp -Rn scenarios/agent-menu/starter/.claude .claude
+mkdir -p .claude
+cp -Rn scenarios/agent-menu/starter/.claude/. .claude/
 ls .claude/agents .claude/hooks .claude/settings.json
+```
+
+The `/.claude` destination already exists in a Day 3 checkout, so copy the
+starter's contents into it. The `-n` flag preserves files that are already
+there. In particular, if `.claude/settings.json` already exists, this command
+does not overwrite it. Compare the two settings files and manually merge any
+missing starter hook entries into the existing JSON while preserving its other
+configuration:
+
+```sh
+if [ -e .claude/settings.json ]; then
+  echo "Preserved existing .claude/settings.json; manually merge missing hook entries."
+  diff -u .claude/settings.json scenarios/agent-menu/starter/.claude/settings.json || true
+fi
+```
+
+On Windows PowerShell, copy the directories and only copy `settings.json` when
+the destination does not already have one:
+
+```powershell
+$starter = "scenarios/agent-menu/starter/.claude"
+New-Item -ItemType Directory -Force .claude | Out-Null
+$starterRoot = (Resolve-Path -LiteralPath $starter).Path
+$destinationRoot = (Resolve-Path -LiteralPath ".claude").Path
+Get-ChildItem -LiteralPath $starterRoot -File -Recurse -Force |
+  Where-Object FullName -ne (Join-Path $starterRoot "settings.json") |
+  ForEach-Object {
+    $relative = $_.FullName.Substring($starterRoot.Length).TrimStart([char[]]@("\", "/"))
+    $destination = Join-Path $destinationRoot $relative
+    if (-not (Test-Path -LiteralPath $destination)) {
+      New-Item -ItemType Directory -Force (Split-Path -Parent $destination) | Out-Null
+      Copy-Item -LiteralPath $_.FullName -Destination $destination -Recurse
+    }
+  }
+if (Test-Path -LiteralPath ".claude/settings.json") {
+  Write-Host "Preserved existing .claude/settings.json; manually merge missing hook entries."
+} else {
+  Copy-Item -LiteralPath "$starter/settings.json" -Destination ".claude/settings.json"
+}
 ```
 
 You now have five project subagents (`ticket-triage`, `runbook-writer`,
 `repo-reviewer`, `retro-writer`, `evaluator`) and a hook that writes a trace
-of every tool call to `trace/<session>.jsonl`. Start Claude Code in the
-checkout root so it loads `.claude/settings.json`; if it was already running,
-restart it. Nothing is committed: `/.claude/`, `trace/`, and
+of each successful observed `PostToolUse` call (plus the configured lifecycle
+events) to `trace/<session>.jsonl`. Failed or blocked tool calls do not produce
+a `PostToolUse` line and are not captured by this hook. Start Claude Code in
+the checkout root so it loads `.claude/settings.json`; if it was already
+running, restart it. Nothing is committed: `/.claude/`, `trace/`, and
 `participant-output/` are ignored.
 
 ## The same loop for every option
@@ -47,13 +89,16 @@ your prompt + contract
 You can interrupt, steer, or add context at any point.
 ```
 
-That is the agentic loop from the Claude Code docs; every tool call inside it
-leaves one line in your trace.
+That is the agentic loop from the Claude Code docs; every successful observed
+`PostToolUse` call inside it leaves one line in your trace. Failed or blocked
+tool calls are not captured by this trace hook.
 
 Rules that never change: the agent previews in chat and writes nothing; you
 save what you accept under `participant-output/`; every claim cites a file
 or row; unsupported details are `OPEN`; no Jira, GitLab, Confluence, PSP, or
-bank record is created, changed, or implied.
+bank record is created, changed, or implied. The checker checks output shape
+and only some citation forms; a human must verify that every cited path and
+source row actually supports the claim.
 
 ## Day 4 — build (individual 25 min, then groups of 3–4)
 

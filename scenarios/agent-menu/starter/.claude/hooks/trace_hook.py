@@ -51,29 +51,39 @@ def main() -> int:
         payload = json.loads(raw)
     except json.JSONDecodeError:
         return 0
+    if not isinstance(payload, dict):
+        return 0
 
-    project_dir = Path(os.environ.get("CLAUDE_PROJECT_DIR") or payload.get("cwd") or ".")
-    trace_dir = project_dir / "trace"
-    trace_dir.mkdir(parents=True, exist_ok=True)
-    session = str(payload.get("session_id", "unknown"))[:36]
+    try:
+        project_dir = Path(os.environ.get("CLAUDE_PROJECT_DIR") or payload.get("cwd") or ".")
+        trace_dir = project_dir / "trace"
+        trace_dir.mkdir(parents=True, exist_ok=True)
+        raw_session = str(payload.get("session_id", "unknown"))[:36]
+        session = "".join(char if char in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-" else "_" for char in raw_session)
+        if not session or session in {".", ".."}:
+            session = "unknown"
 
-    summary = summarize_input(payload.get("tool_name", ""), payload.get("tool_input", {}))
-    # Show repository-relative paths so a learner can read the trace at a glance.
-    summary = summary.replace(str(project_dir.resolve()) + "/", "")
+        summary = summarize_input(payload.get("tool_name", ""), payload.get("tool_input", {}))
+        # Show repository-relative paths so a learner can read the trace at a glance.
+        summary = summary.replace(str(project_dir.resolve()) + "/", "")
 
-    event = {
-        "ts": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-        "event": payload.get("hook_event_name"),
-        "agent_type": payload.get("agent_type"),
-        "agent_id": payload.get("agent_id"),
-        "tool": payload.get("tool_name"),
-        "summary": summary,
-        "response_chars": response_size(payload.get("tool_response")) if "tool_response" in payload else None,
-        "prompt": (payload.get("prompt") or "")[:200] or None,
-        "last_message_chars": len(payload.get("last_assistant_message") or "") or None,
-    }
-    with (trace_dir / f"{session}.jsonl").open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(event, ensure_ascii=False) + "\n")
+        event = {
+            "ts": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+            "event": payload.get("hook_event_name"),
+            "agent_type": payload.get("agent_type"),
+            "agent_id": payload.get("agent_id"),
+            "tool": payload.get("tool_name"),
+            "summary": summary,
+            "response_chars": response_size(payload.get("tool_response")) if "tool_response" in payload else None,
+            "prompt": (payload.get("prompt") or "")[:200] or None,
+            "last_message_chars": len(payload.get("last_assistant_message") or "") or None,
+        }
+        with (trace_dir / f"{session}.jsonl").open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(event, ensure_ascii=False) + "\n")
+    except (OSError, RuntimeError, TypeError, ValueError):
+        # Hooks are observation-only. An unusable project path must never block
+        # or change the agent, even when the trace cannot be written.
+        return 0
     return 0
 
 

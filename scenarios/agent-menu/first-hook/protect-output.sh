@@ -1,13 +1,15 @@
 #!/bin/bash
-# protect-output.sh — PreToolUse hook for Write|Edit.
-# Blocks any file write outside participant-output/ (exit 2 = block, message on stderr).
-# Learner exercise: change the allowed folder, or add a second rule.
-INPUT=$(cat)
-FILE_PATH=$(printf '%s' "$INPUT" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("tool_input",{}).get("file_path",""))' 2>/dev/null \
-  || printf '%s' "$INPUT" | python -c 'import json,sys; print(json.load(sys.stdin).get("tool_input",{}).get("file_path",""))')
-FILE_PATH="${FILE_PATH//\\//}"   # normalise Windows backslashes
-case "$FILE_PATH" in
-  */participant-output/*|participant-output/*) exit 0 ;;
-  "") exit 0 ;;
-  *) echo "Blocked by first-hook: agents may only write under participant-output/ (asked for: $FILE_PATH)" >&2; exit 2 ;;
-esac
+# protect-output.sh — portable launcher for protect_output.py.
+# Keep this wrapper as a delegate so every platform uses the same path rule.
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd) || exit 2
+PYTHON_BIN=""
+if command -v python3 >/dev/null 2>&1; then
+  PYTHON_BIN=$(command -v python3)
+elif command -v python >/dev/null 2>&1; then
+  PYTHON_BIN=$(command -v python)
+fi
+if [ -z "$PYTHON_BIN" ] || [ ! -f "$SCRIPT_DIR/protect_output.py" ]; then
+  echo "Blocked by first-hook: protect_output.py or Python is unavailable" >&2
+  exit 2
+fi
+exec "$PYTHON_BIN" "$SCRIPT_DIR/protect_output.py"
