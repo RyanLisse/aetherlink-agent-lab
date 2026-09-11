@@ -27,6 +27,9 @@ cd aetherlink-agent-lab
    ticket-agent guide](scenarios/ticket-agent/README.md).
 5. Run the checker on a human-previewed output. The checker confirms shape only;
    it does not prove that either agent ran or that the content is correct.
+6. On Day 4 choose one agent from [the agent menu](scenarios/agent-menu/README.md),
+   install its starter (subagents plus a trace hook), and build it step by step.
+   On Day 5 harden it with the `evaluator` subagent and hand it over.
 
 The first exercise is deliberately bounded. Do not connect a remote Jira,
 GitLab, Confluence, PSP, bank, or production repository. Do not approve a
@@ -41,9 +44,10 @@ payout. Keep unsupported explanations and missing evidence as `OPEN`.
 | [n8n/README.md](n8n/README.md) | Import, UI setup, smoke test, and evidence steps |
 | [n8n/workflows/ticket-coach.json](n8n/workflows/ticket-coach.json) | Credential-free importable n8n demo (Anthropic chat model by default; provider swappable in the UI) |
 | [scenarios/ticket-agent/](scenarios/ticket-agent/) | Same ticket input, shared instruction, contract, starter, examples, and checker |
+| [scenarios/agent-menu/](scenarios/agent-menu/) | Day 4–5 menu: choose one of three Claude Code agents (plus a stretch option), trace hooks, evaluator, checker |
 | [scenarios/payment-reconciliation/data/](scenarios/payment-reconciliation/data/) | Synthetic ledger, PSP, and bank CSVs for optional local context |
 | [scenarios/payment-reconciliation/tickets/](scenarios/payment-reconciliation/tickets/) | Six fictional FIN-001–FIN-006 ticket templates |
-| [templates/](templates/) | Session, recap, knowledge, decision, and handoff forms |
+| [templates/](templates/) | Session, recap, knowledge, decision, handoff, and run-log forms |
 
 All amounts are fictional integer minor EUR values. Examples are discussion
 material and never learner evidence.
