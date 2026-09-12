@@ -68,6 +68,7 @@ payout. Keep unsupported explanations and missing evidence as `OPEN`.
 | [scenarios/payment-reconciliation/data/](scenarios/payment-reconciliation/data/) | Synthetic ledger, PSP, and bank CSVs for optional local context |
 | [scenarios/payment-reconciliation/tickets/](scenarios/payment-reconciliation/tickets/) | Six fictional FIN-001–FIN-006 ticket templates |
 | [templates/](templates/) | Session, recap, knowledge, decision, handoff, and run-log forms |
+| [docs/proof-workflow.md](docs/proof-workflow.md) | Bounded Proof review exercise and manual GitLab handoff |
 | [BRANCHING.md](BRANCHING.md) | Daily branch map and handoff rules |
 
 All amounts are fictional integer minor EUR values. Examples are discussion
