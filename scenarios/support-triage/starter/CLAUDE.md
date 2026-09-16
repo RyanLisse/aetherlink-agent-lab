@@ -23,11 +23,13 @@ malformed data, unknown priority values, a specialist or coordinator result
 with a conflicting ticket ID, and a priority/action conflict. Preserve
 `ticket_id` exactly and preserve the Risk Agent's `risk_note`.
 
-Return ONLY one valid JSON object with exactly these fields:
+Return ONLY one valid JSON object with exactly these fields. Copy the exact
+`ticket_id` from the selected input; the placeholder below is illustrative and
+must be replaced by that input value.
 
 ```json
 {
-  "ticket_id": "WL-1026",
+  "ticket_id": "<exact input ticket_id>",
   "priority": "low | medium | high",
   "sentiment": "neutral | frustrated | angry",
   "recommended_action": "auto_reply | investigate | escalate",
