@@ -147,8 +147,10 @@ subagent adapter. Return the design in chat only.
 ```
 
 Individual action: inspect `n8n/workflows/support-triage.json` and verify that
-`Main Coordinator` connects to both `Customer Reply Agent` and `Risk Agent`,
-then that validation precedes `Priority router`.
+the `AI Agent` connects to both `Customer Reply Agent` and `Risk Agent`, then
+that `Code in JavaScript` precedes `Switch`. The supplied Code node parses the
+model result but is not a complete validator; the stricter validation belongs
+to the Claude contract and the stdlib checker.
 
 Human checkpoint: accept the field mapping and the explicit `draft_only` and
 `human_approval_required` gate before importing or running a model.
@@ -158,7 +160,7 @@ Human checkpoint: accept the field mapping and the explicit `draft_only` and
 Artifact: the first small deterministic route result, followed by one working
 Claude Code preview. The deterministic tool has no dependencies or network.
 
-First result (run this before opening n8n):
+First result (run this before the first Claude run):
 
 ```sh
 python3 scenarios/support-triage/tools/check_support_triage.py
@@ -211,7 +213,7 @@ Individual action: validate the saved Claude preview with:
 ```sh
 python3 scenarios/support-triage/tools/check_support_triage.py \
   --ticket scenarios/support-triage/fixtures/ticket.json \
-  --decision participant-output/support-triage-n8n.json
+  --decision participant-output/support-triage-claude.json
 ```
 
 Expected output is a routed JSON envelope with the same `ticket_id`, the
@@ -273,13 +275,16 @@ only when the evidence and OPEN items are readable by the next teammate.
 
 ## Claude Code individual attempt
 
-From the checkout root, install the three project subagents locally. The
-destination is ignored participant configuration and must not be committed:
+From the checkout root, install the two specialist project subagents locally.
+The destination is ignored participant configuration and must not be
+committed. Keep the existing repository `CLAUDE.md`; import the coordinator
+instruction with its `@` path below:
 
 ```sh
 mkdir -p .claude/agents
 cp -n scenarios/support-triage/starter/.claude/agents/*.md .claude/agents/
 claude --version
+claude
 ```
 
 Then paste this exact prompt as the individual final attempt:
@@ -300,6 +305,24 @@ the preview, then run the checker command above with that output path. Record
 whether the trace visibly contains both specialist calls. Do not claim a live
 Claude execution in repository material; the participant records it only
 when they have real local readback.
+
+Make a second independent attempt with the different synthetic input
+[`fixtures/ticket-followup.json`](fixtures/ticket-followup.json), not by
+changing only the ID in the first ticket. Start a fresh Claude Code session,
+run the same coordinator instruction, and replace the input path in the prompt
+with `scenarios/support-triage/fixtures/ticket-followup.json`. Save the accepted
+preview as `participant-output/support-triage-claude-followup.json` and run:
+
+```sh
+python3 scenarios/support-triage/tools/check_support_triage.py \
+  --ticket scenarios/support-triage/fixtures/ticket-followup.json \
+  --decision participant-output/support-triage-claude-followup.json
+```
+
+The second run checks that the coordinator reads the complete new ticket,
+preserves `WL-1027`, and keeps the specialist and human-review rules intact.
+Record both attempts separately; a changed ticket ID with stale message text
+is a failed handoff.
 
 ## Evidence and safety
 

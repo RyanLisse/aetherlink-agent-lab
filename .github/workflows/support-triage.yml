@@ -31,4 +31,4 @@ jobs:
             --ticket scenarios/support-triage/fixtures/ticket.json \
             --decision scenarios/support-triage/fixtures/example-output.json
       - name: Check sanitized n8n JSON
-        run: python3 -c 'import json; p=json.load(open("n8n/workflows/support-triage.json")); assert not any("credentials" in n for n in p["nodes"]); assert {n["name"] for n in p["nodes"]} >= {"Main Coordinator", "Customer Reply Agent", "Risk Agent"}'
+        run: python3 -c 'import json; p=json.load(open("n8n/workflows/support-triage.json")); assert not any("credentials" in n for n in p["nodes"]); assert {n["name"] for n in p["nodes"]} >= {"AI Agent", "Customer Reply Agent", "Risk Agent", "Code in JavaScript", "Switch"}'
