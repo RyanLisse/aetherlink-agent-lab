@@ -18,6 +18,16 @@ the human review gate.
 `squad-1/day-3`, `squad-1/day-4`, and `squad-1/day-5` preserve the existing
 payment-operations ticket route. Use those branches only for that route.
 
+## Squad 1 support triage workshop
+
+The facilitator's daily branch may use the separate
+[support-triage guide](scenarios/support-triage/README.md) for the local
+n8n → Claude Code exercise. It is a distinct contract from the existing
+payment-operations ticket coach: its synthetic `WL-1026` input is routed by
+`low → auto_reply`, `medium → investigate`, and `high → escalate`, with both
+specialist calls and human approval required. Do not silently substitute the
+older `scenarios/ticket-agent/` workflow.
+
 ## Daily commands
 
 ```sh
