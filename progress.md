@@ -18,6 +18,7 @@ This is a current-state board, not a diary.
 - Support triage remote check: `VERIFIED — .github/workflows/support-triage.yml runs syntax, fixtures, example decision, and sanitized-source checks without installs`
 - Support triage n8n execution: `OPEN — learner must select a model credential in the UI and capture both specialist calls`
 - Support triage Claude Code execution: `OPEN — learner must run the project subagents and capture the trace`
+- Local Claude smoke: `OPEN — both specialists were reached, but human review rejected an unsupported completed-action claim; learner access and live acceptance remain OPEN`
 
 ## Blockers
 

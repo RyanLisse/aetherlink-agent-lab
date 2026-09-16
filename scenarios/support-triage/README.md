@@ -225,7 +225,14 @@ agrees with the wording.
 
 Human checkpoint: read the ticket and draft side by side. Confirm every
 unsupported fact remains `OPEN`, then mark the draft accepted, revise, or
-`OPEN` in the run log. Never accept a checker pass as business approval.
+`OPEN` in the run log. A draft such as `I've logged your report` is a failed
+semantic review because the supplied ticket contains no evidence that a report
+was logged. Reject it, ask the coordinator to revise using the exact source
+text, and rerun the same checker and human review. Also reject a trace with
+more than exactly one foreground call to each of `customer-reply` and `risk`.
+The checker proves shape and routing only; compare the returned JSON against
+the source ticket and specialist trace before accepting it. Never accept a
+checker pass as business approval.
 
 ### Deploy — local teammate handoff
 
