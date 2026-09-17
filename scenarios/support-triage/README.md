@@ -16,6 +16,9 @@ runtime security evidence.
 
 ## Contract and files
 
+For page-by-page navigation and download timing, keep the repository's
+[attendee route card](../../ATTENDEE-ROUTE.md) open next to this guide.
+
 The input is [`fixtures/ticket.json`](fixtures/ticket.json). It contains the
 fictional ticket `WL-1026` and no credential or remote identifier. A valid
 coordinator result is one JSON object containing:

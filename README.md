@@ -15,6 +15,10 @@ git clone https://github.com/RyanLisse/aetherlink-agent-lab.git
 cd aetherlink-agent-lab
 ```
 
+Use the [attendee route card](ATTENDEE-ROUTE.md) during the workshop. It tells
+you which presentation or repository page to open at each timebox and when a
+clone or local workflow file is actually needed.
+
 ## Daily branches
 
 Use one branch for each training day. The branch tells you the current scope
